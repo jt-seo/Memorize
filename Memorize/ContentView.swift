@@ -11,16 +11,19 @@ import SwiftUI
 struct ContentView: View {
     var viewModel: EmojiMemoryGame
     var body: some View {
-        HStack {
-            ForEach (viewModel.cards) {card in
-                CardView(card: card).onTapGesture {
-                    self.viewModel.choose(card: card)
+        VStack {
+            Text("Pair count is \(EmojiMemoryGame.numberOfPairs)").font(.headline).foregroundColor(.black)
+            HStack {
+                ForEach (viewModel.cards) {card in
+                    CardView(card: card).onTapGesture {
+                        self.viewModel.choose(card: card)
+                    }
                 }
             }
-        }
-            .font(.largeTitle)
+            .font(EmojiMemoryGame.numberOfPairs < 5 ? .largeTitle : .headline)
             .foregroundColor(.orange)
-        .padding()
+            .padding()
+        }
     }
 }
 
@@ -46,6 +49,7 @@ struct ContentView_Previews: PreviewProvider {
         Group {
             ContentView(viewModel: EmojiMemoryGame())
                 .environment(\.colorScheme, .dark)
+            //.previewLayout(.fixed(width: 568, height: 320))
         }
     }
 }

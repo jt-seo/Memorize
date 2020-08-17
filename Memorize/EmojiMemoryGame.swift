@@ -11,10 +11,12 @@ import SwiftUI
 class EmojiMemoryGame {
     private var model = createEmojiGame()
     
+    static let numberOfPairs = Int.random(in: 2...5)
+    
     private static func createEmojiGame() -> MemoryGame<String> {
-        let emojis = ["👻", "🎃", "🕷"]
-        return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
-            emojis[pairIndex]
+        let emojis = ["👻", "🎃", "🕷", "🎅", "☃"].shuffled()
+        return MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
+            emojis[pairIndex % emojis.count]
         }
     }
     

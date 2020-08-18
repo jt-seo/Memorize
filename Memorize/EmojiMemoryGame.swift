@@ -11,7 +11,7 @@ import SwiftUI
 class EmojiMemoryGame: ObservableObject {
     @Published private var model = createEmojiGame()
     
-    static let numberOfPairs = Int.random(in: 2...3)
+    static let numberOfPairs = Int.random(in: 2...5)
     
     private static func createEmojiGame() -> MemoryGame<String> {
         let emojis = ["👻", "🎃", "🕷", "🎅", "☃"].shuffled()
@@ -28,7 +28,6 @@ class EmojiMemoryGame: ObservableObject {
     // MARK: - Intents
     
     func choose(card: MemoryGame<String>.Card) {
-        objectWillChange.send()
         model.choose(card: card)
     }
 }

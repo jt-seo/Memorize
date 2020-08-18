@@ -24,47 +24,22 @@ struct MemoryGame<Content: Equatable> {
     }
     
     mutating func choose(card: Card) {
-//        if (card.isMatched == false && card.isFaceUp == false) {
-//            guard let index = cards.firstIndex(of: card) else {
-//                print("No matching card! \(card)")
-//                return
-//            }
-//            cards[index].toggleCard()
-//
-//            if prevCard != nil {
-//                if prevCard!.cardContent == card.cardContent && prevCard!.id != card.id {
-//                    // Find matching cards!
-//                    score += 5
-//                    print("Find matching card.")
-//                }
-//                else {
-//                    cards[index].toggleCard()
-//                    guard let prevIndex = cards.firstIndex(of: prevCard!) else {
-//                        print("No matching previous card! \(card)")
-//                        return
-//                    }
-//                    cards[prevIndex].toggleCard()
-//                    print("Card is not matching.")
-//                    prevCard = nil
-//                }
-//            }
-//            else {
-//                prevCard = card
-//            }
-//        }
-        print("Card chosen: \(card)")
+        let cardIndex = self.index(of: card)
+        cards[cardIndex].isFaceUp.toggle()
+        print("Card chosen\(cardIndex): \(cards[cardIndex])")
     }
     
-    struct Card: Identifiable, Equatable {
-        static func == (lhs: MemoryGame<Content>.Card, rhs: MemoryGame<Content>.Card) -> Bool {
-            return lhs.id == rhs.id
+    func index(of card: Card) -> Int {
+        for index in 0..<cards.count {
+            if cards[index].id == card.id {
+                return index
+            }
         }
-        
+        return 0
+    }
+    
+    struct Card: Identifiable {
         var isFaceUp = true
-        
-        mutating func toggleCard() {
-            isFaceUp.toggle()
-        }
         var isMatched = false
         var cardContent: Content
         var id: Int

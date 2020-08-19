@@ -30,7 +30,7 @@ class EmojiMemoryGame: ObservableObject {
                             Themes.animal: ["🐶", "🐱", "🐼", "🐨", "🐒"],
                             Themes.fruit: ["🍏", "🍎", "🍐", "🍉", "🍌"]]
     
-    var theme: Themes
+    private(set) var theme: Themes
     private var numberOfPairs = Int.random(in: 2...5)
     
     init (theme: Themes) {

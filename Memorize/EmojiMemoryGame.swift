@@ -24,14 +24,14 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    private let emojiList = [Themes.halloween: ["👻", "🎃", "🕷", "🎅", "☃"],
-                            Themes.number: ["1", "2", "3", "4", "5"],
-                            Themes.face: ["😀", "🤬", "😈", "😎", "🥶"],
-                            Themes.animal: ["🐶", "🐱", "🐼", "🐨", "🐒"],
-                            Themes.fruit: ["🍏", "🍎", "🍐", "🍉", "🍌"]]
+    private let emojiList = [Themes.halloween: ["👻", "🎃", "🕷", "🎅", "☃", "👺", "👽"],
+                            Themes.number: ["1", "2", "3", "4", "5", "6", "7"],
+                            Themes.face: ["😀", "🤬", "😈", "😎", "🥶", "🤡", "🤢"],
+                            Themes.animal: ["🐶", "🐱", "🐼", "🐨", "🐒", "🦁", "🐽"],
+                            Themes.fruit: ["🍏", "🍎", "🍐", "🍉", "🍌", "🍒", "🍑"]]
     
     private(set) var theme: Themes
-    private var numberOfPairs = Int.random(in: 2...5)
+    private var numberOfPairs = Int.random(in: 5...10)
     
     init (theme: Themes) {
         self.theme = theme
@@ -58,7 +58,7 @@ class EmojiMemoryGame: ObservableObject {
     
     func reset() {
         theme = Themes.allCases.randomElement()!
-        numberOfPairs = Int.random(in: 2...5)
+        numberOfPairs = Int.random(in: 5...10)
         
         let emojis = emojiList[theme]!.shuffled()
         model =  MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in

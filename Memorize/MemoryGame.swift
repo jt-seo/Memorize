@@ -48,6 +48,13 @@ struct MemoryGame<Content> where Content: Equatable {
         cards.shuffle()
     }
     
+    private func printFlippedCards() {
+        for content in flippedCards {
+            print(content, terminator: " ")
+        }
+        print("")
+    }
+    
     mutating func choose(card: Card) {
         if let chosenIndex = cards.firstIndex(of: card), !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
             addFlippedCard(card.cardContent)
@@ -57,6 +64,8 @@ struct MemoryGame<Content> where Content: Equatable {
                     cards[prevIndex].isMatched = true
                     totalScore += 2
                     print("Card matched! \(cards[chosenIndex]), \(cards[prevIndex]) Score: \(totalScore)")
+                    flippedCards.removeAll { $0 == card.cardContent }
+                    printFlippedCards()
                 }
                 else {
                     totalScore += scoreForOneTurn

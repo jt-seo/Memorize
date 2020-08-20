@@ -17,9 +17,7 @@ struct MemoryGame<Content> where Content: Equatable {
         }
         set {
             for index in cards.indices {
-                if (!cards[index].isMatched) {
-                    cards[index].isFaceUp = index == newValue
-                }
+                cards[index].isFaceUp = index == newValue
             }
         }
     }

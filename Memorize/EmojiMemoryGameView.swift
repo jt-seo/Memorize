@@ -18,15 +18,19 @@ struct EmojiMemoryGameView: View {
             Grid(viewModel.cards) { card in
                 CardView(card: card)
                     .onTapGesture {
-                        self.viewModel.choose(card: card)
+                        withAnimation(.linear(duration: self.cardFlipAniDuration)) {
+                            self.viewModel.choose(card: card)
+                        }
                     }
                     .padding(5)
             }
                 .foregroundColor(colorList[viewModel.theme])
                 .padding()
-            Button("New Game", action: {
-                self.viewModel.reset()
-                }).padding()
+            Button(action: {
+                withAnimation(.easeInOut(duration: self.newGameAniDuration)) {
+                    self.viewModel.resetGame()
+                }
+            }, label: {Text("New Game")}).padding()
         }
     }
     
@@ -36,6 +40,10 @@ struct EmojiMemoryGameView: View {
                              EmojiMemoryGame.Themes.face: Color.pink,
                              EmojiMemoryGame.Themes.animal: Color.yellow,
                              EmojiMemoryGame.Themes.fruit: Color.green]
+    
+    // MARK - Animation constants.
+    private let cardFlipAniDuration = 0.6
+    private let newGameAniDuration = 0.5
 }
 
 struct CardView: View {
@@ -46,16 +54,21 @@ struct CardView: View {
         }
     }
     
+    @ViewBuilder
     private func cardBody(for size: CGSize) -> some View {
-        ZStack {
-            Pie(startAngle: Angle(degrees: 90-90), endAngle: Angle(degrees: 360-90), clockwise: false)
-                .opacity(0.5)
-                .padding(5)
-            Text(card.cardContent)
-                .font(Font.system(size: fontSize(for: size)))
+        if card.isFaceUp || !card.isMatched {
+            ZStack {
+                Pie(startAngle: Angle(degrees: 90-90), endAngle: Angle(degrees: 360-90), clockwise: false)
+                    .opacity(0.5)
+                    .padding(5)
+                Text(card.cardContent)
+                    .font(Font.system(size: fontSize(for: size)))
+                    .rotationEffect(Angle(degrees: card.isMatched ? 360 : 0))
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
+            }
+                .cardify(isFaceUp: card.isFaceUp)
+                .transition(.scale)
         }
-            .cardify(isFaceUp: card.isFaceUp)
-        
     }
 
     private func fontSize(for size: CGSize) -> CGFloat {
@@ -65,7 +78,7 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = EmojiMemoryGame(theme: EmojiMemoryGame.Themes.face)
+        let viewModel = EmojiMemoryGame()
         viewModel.choose(card: viewModel.cards[0])
         return EmojiMemoryGameView(viewModel: viewModel)
             .environment(\.colorScheme, .dark)

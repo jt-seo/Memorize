@@ -74,11 +74,11 @@
 			children = (
 				1B7F81F524E27C3C00E5C115 /* AppDelegate.swift */,
 				1FAA7AE624EBC376007577FC /* Array+Identifiable.swift */,
+				1FAA7B0C24ED1DA7007577FC /* Cardify.swift */,
 				1B7F81F724E27C3C00E5C115 /* SceneDelegate.swift */,
 				1B7F81F924E27C3C00E5C115 /* EmojiMemoryGameView.swift */,
-				1FAA7B0E24ED20CA007577FC /* Pie.swift */,
-				1FAA7B0C24ED1DA7007577FC /* Cardify.swift */,
 				1B7F820B24E532B600E5C115 /* EmojiMemoryGame.swift */,
+				1FAA7B0E24ED20CA007577FC /* Pie.swift */,
 				1FAA7AE424EB9F61007577FC /* Grid.swift */,
 				1FAA7AE824EBC4B7007577FC /* GridLayout.swift */,
 				1B7F820924E5321C00E5C115 /* MemoryGame.swift */,

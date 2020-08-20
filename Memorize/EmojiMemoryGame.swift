@@ -9,35 +9,36 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    @Published private var model: MemoryGame<String>
-        
+    @Published private var model = createGame(theme: Themes.halloween)
+
     enum Themes: CaseIterable {
         case halloween, number, face, animal, fruit
         func getDescription() -> String {
             switch (self) {
-                case .halloween: return "Halloween Theme"
-                case .number: return "Number Theme"
-                case .face: return "Face Theme"
-                case .animal: return "Animal Theme"
-                case .fruit: return "Fruit Theme"
+                case .halloween: return "Halloween"
+                case .number: return "Number"
+                case .face: return "Face"
+                case .animal: return "Animal"
+                case .fruit: return "Fruit"
             }
         }
     }
     
-    private let emojiList = [Themes.halloween: ["👻", "🎃", "🕷", "🎅", "☃", "👺", "👽"],
+    private static let emojiList = [Themes.halloween: ["👻", "🎃", "🕷", "🎅", "☃", "👺", "👽"],
                             Themes.number: ["1", "2", "3", "4", "5", "6", "7"],
                             Themes.face: ["😀", "🤬", "😈", "😎", "🥶", "🤡", "🤢"],
                             Themes.animal: ["🐶", "🐱", "🐼", "🐨", "🐒", "🦁", "🐽"],
                             Themes.fruit: ["🍏", "🍎", "🍐", "🍉", "🍌", "🍒", "🍑"]]
     
-    private(set) var theme: Themes
-    private var numberOfPairs = Int.random(in: 5...10)
+    private static var userTheme: Themes?
+    private static let minCardPairs = 2
+    private static let maxCardPairs = 5
+    private static var numberOfPairs = Int.random(in: minCardPairs...maxCardPairs)
     
-    init (theme: Themes) {
-        self.theme = theme
-        
-        let emojis = emojiList[theme]!.shuffled()
-        model =  MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
+    static func createGame(theme: Themes) -> MemoryGame<String> {
+        EmojiMemoryGame.userTheme = theme
+        let emojis = emojiList[theme]!
+        return MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             emojis[pairIndex % emojis.count]
         }
     }
@@ -49,6 +50,14 @@ class EmojiMemoryGame: ObservableObject {
     var score: Int {
         model.totalScore
     }
+    var theme: Themes {
+        get {
+            EmojiMemoryGame.userTheme!
+        }
+        set {
+            EmojiMemoryGame.userTheme = newValue
+        }
+    }
     
     // MARK: - Intents
     
@@ -56,13 +65,9 @@ class EmojiMemoryGame: ObservableObject {
         model.choose(card: card)
     }
     
-    func reset() {
+    func resetGame() {
+        EmojiMemoryGame.numberOfPairs = Int.random(in: EmojiMemoryGame.minCardPairs...EmojiMemoryGame.maxCardPairs)
         theme = Themes.allCases.randomElement()!
-        numberOfPairs = Int.random(in: 5...10)
-        
-        let emojis = emojiList[theme]!.shuffled()
-        model =  MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
-            emojis[pairIndex % emojis.count]
-        }
+        model = EmojiMemoryGame.createGame(theme: theme)
     }
 }

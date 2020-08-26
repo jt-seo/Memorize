@@ -12,7 +12,7 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     var body: some View {
         VStack {
-            Text("\(viewModel.theme.getDescription()), Score: \(viewModel.score)")
+            Text("\(self.viewModel.theme.themeName), Score: \(viewModel.score)")
                 .font(.headline)
                 .padding()
             Grid(viewModel.cards) { card in
@@ -24,7 +24,7 @@ struct EmojiMemoryGameView: View {
                     }
                     .padding(5)
             }
-                .foregroundColor(colorList[viewModel.theme])
+            .foregroundColor(self.viewModel.theme.color)
                 .padding()
             Button(action: {
                 withAnimation(.easeInOut(duration: self.newGameAniDuration)) {
@@ -33,13 +33,6 @@ struct EmojiMemoryGameView: View {
             }, label: {Text("New Game")}).padding()
         }
     }
-    
-    // MARK: - Theme constants.
-    private let colorList = [EmojiMemoryGame.Themes.halloween: Color.orange,
-                             EmojiMemoryGame.Themes.number: Color.blue,
-                             EmojiMemoryGame.Themes.face: Color.pink,
-                             EmojiMemoryGame.Themes.animal: Color.yellow,
-                             EmojiMemoryGame.Themes.fruit: Color.green]
     
     // MARK - Animation constants.
     private let cardFlipAniDuration = 0.6

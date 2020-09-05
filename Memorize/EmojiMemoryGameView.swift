@@ -12,7 +12,7 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     var body: some View {
         VStack {
-            Text("\(self.viewModel.theme.themeName), Score: \(viewModel.score)")
+            Text("\(self.viewModel.theme.name), Score: \(viewModel.score)")
                 .font(.headline)
                 .padding()
             Grid(viewModel.cards) { card in
@@ -91,7 +91,8 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = EmojiMemoryGame()
+        // How can I access the private property for debugging purpose like here?
+        let viewModel = EmojiMemoryGame(theme: Theme(name: "Halloween", emojiList: "👻🎃🕷🎅☃👺👽", color: .orange, numberOfPairsOfCards: Int.random(in: 4...6)))
         viewModel.choose(card: viewModel.cards[0])
         return EmojiMemoryGameView(viewModel: viewModel)
             .environment(\.colorScheme, .dark)

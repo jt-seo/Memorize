@@ -13,13 +13,15 @@ class EmojiMemoryGame: ObservableObject {
     
     private var numberOfPairs: Int
     
-    var theme: EmojiMemoryGameTheme.Theme
+    var theme: Theme
     
-    init() {
-        theme = EmojiMemoryGameTheme.randomTheme
-        numberOfPairs = theme.numberOfPairsOfCards
+    init(theme: Theme) {
+        self.theme = theme
+        numberOfPairs = theme.numberOfPairsOfCards <= theme.emojiList.count ? theme.numberOfPairsOfCards : theme.emojiList.count
         
         let emojiList = theme.emojiList
+        
+        print("name: \(theme.name), card count: \(numberOfPairs)")
         
         model = MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             let strIdx = emojiList.index(emojiList.startIndex, offsetBy: pairIndex)
@@ -42,9 +44,6 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func resetGame() {
-        theme = EmojiMemoryGameTheme.randomTheme
-        numberOfPairs = theme.numberOfPairsOfCards
-        
         model = MemoryGame<String>(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             let strIdx = theme.emojiList.index(theme.emojiList.startIndex, offsetBy: pairIndex)
             return String(theme.emojiList[strIdx])
